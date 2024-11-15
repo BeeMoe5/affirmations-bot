@@ -1,0 +1,5 @@
+poetry.lock
+.env
+test.py
+__pycache__
+*/*/sounds/*.mp3
