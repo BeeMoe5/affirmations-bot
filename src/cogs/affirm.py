@@ -13,8 +13,9 @@ class Affirm(commands.Cog):
     VOICE_AFFIRMATION: int = 2  # music based affirmations
     IMAGE_AFFIRMATION: int = 3  # don't completely have an idea for this, but it could be a GIF or image based affirmations
 
-    TEXT_CHANNEL_ID: int = 633365830108708894
-    VOICE_CHANNEL_ID: int = 580695981922975744
+    TEXT_CHANNEL_ID: int = int(os.getenv("AFFIRM_TEXT_CHANNEL_ID"))
+    VOICE_CHANNEL_ID: int = int(os.getenv("AFFIRM_VOICE_CHANNEL_ID"))
+    ROLE_ID: int = int(os.getenv("AFFIRM_ROLE_ID"))
 
     TEXT_AFFIRMATIONS: list[str]
     VOICE_AFFIRMATIONS: list[str] = []
@@ -133,7 +134,7 @@ class Affirm(commands.Cog):
         Sends a random text affirmation to the channel.
         """
         channel = self.bot.get_channel(self.TEXT_CHANNEL_ID)
-        role = channel.guild.get_role(550581727903481867)
+        role = channel.guild.get_role(self.ROLE_ID)
         random_affirmation = random.choice(self.TEXT_AFFIRMATIONS)
         timestamp = datetime.datetime.now().astimezone()
         embed = discord.Embed(title="Affirmation of the day!", description=random_affirmation, color=discord.Color.green(), timestamp=timestamp)
@@ -143,7 +144,7 @@ class Affirm(commands.Cog):
     async def voice_affirmation(self):
         voice_channel = self.bot.get_channel(self.VOICE_CHANNEL_ID)
         text_channel = self.bot.get_channel(self.TEXT_CHANNEL_ID)
-        role = text_channel.guild.get_role(550581727903481867)
+        role = text_channel.guild.get_role(self.ROLE_ID)
         random_song = random.choice(self.VOICE_AFFIRMATIONS)
         player = await voice_channel.connect()
         timestamp = datetime.datetime.now().astimezone()
